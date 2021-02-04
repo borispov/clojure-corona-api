@@ -1,0 +1,13 @@
+{
+  "worldToday": "covidapi:worldToday",
+  "countryToday": "covidapi:countryToday:",
+  "countryYesterday": "covidapi:countryYesterday:",
+  "countries": "covidapi:countries",
+  "resources": "covidapi:resources",
+  "newsHeb": "covidapi:newsHeb",
+  "worldYesterday": "covidapi:worldYesterday",
+  "countriesList": "covidapi:countriesList",
+  "historical": "covidapi:historical:",
+  "israelTime": "covidapi:historical:israel",
+  "worldTime": "covidapi:historical:world"
+}
