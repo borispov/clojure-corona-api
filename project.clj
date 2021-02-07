@@ -1,4 +1,4 @@
-(defproject corona "0.1.0-SNAPSHOT"
+(defproject corona "0.1.0"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
@@ -14,13 +14,13 @@
                  [ring/ring-defaults "0.3.2"]
                  ; Clojure data.JSON library
                  [org.clojure/data.json "1.0.0"]
-                 ; Quartz schedule lib
-                 [clojurewerkz/quartzite "2.1.0"]
                  ; Immutant schedule
                  [org.immutant/scheduling "2.1.10"]
                  ; Redis driver
                  [com.taoensso/carmine "3.1.0"]
-                 [ultra-csv "0.2.3"]
-                 [clojure-csv/clojure-csv "2.0.1"]]
+                 ; clj-http
+                 [clj-http "3.12.0"]
+                 ; CSV Library
+                 [ultra-csv "0.2.3"]]
   :repl-options {:init-ns corona.core}
-  :main ^:skip-aot corona.core)
+  :main corona.core)

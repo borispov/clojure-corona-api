@@ -1,13 +1,27 @@
 (ns corona.utils
   (:gen-class)
   (:require 
+    [clj-http.client :as client]
     [clojure.data.json :as json]
     [taoensso.carmine :as car :refer (wcar)]))
 (require '[ultra-csv.core :as ultra])
 
 ; This is currently the .csv sheet used by *ourworldindata* organization. When it changes I have to change it manually because the hyperlink changes as well
 ; IF THIS CHANGE OCCURS TOO OFTEN - MIGHT CONSIDER WORKING WITH AN API FOR HISTORICAL DATA
-(def jsonconfig (json/read-str (slurp "./config.json") :key-fn keyword))
+
+(def jsonconfig {
+   :worldToday "covidapi:worldToday",
+   :countryToday "covidapi:countryToday:",
+   :countryYesterday "covidapi:countryYesterday:",
+   :countries "covidapi:countries",
+   :resources "covidapi:resources",
+   :newsHeb "covidapi:newsHeb",
+   :worldYesterday "covidapi:worldYesterday",
+   :countriesList "covidapi:countriesList",
+   :historical "covidapi:historical:",
+   :israelTime "covidapi:historical:israel",
+   :worldTime "covidapi:historical:world"})
+
 (def owid-data-url "https://covid.ourworldindata.org/data/owid-covid-data.csv")
 
 (defn csv-to-clj [csv-file] (ultra/read-csv csv-file {:header? true :keywordize-keys? true}))
@@ -26,5 +40,6 @@
 (defn filter-location [loc dataset] (filter #(= (:location %) loc) dataset))
 
 (def d [{:location "Israel" :cases 5123}{:location "Israel" :cases 1023}{:location "Israel" :cases 92}])
-(defn json-from-api [url] (json/read-str (slurp url) :key-fn keyword))
+;; (defn json-from-api [url] (json/read-str (:body (client/get url)) :key-fn keyword))
 (defn get-redis-key [k1] (get jsonconfig (keyword k1)))
+(defn json-from-api [url] (:body (client/get url)))

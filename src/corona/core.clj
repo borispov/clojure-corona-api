@@ -28,9 +28,10 @@
 
 
 (defn -main
-  [& m]
-  (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]
+  [& args]
+  (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
     (schedule isra-world :every [20 :minutes])
     (schedule job-all-history :in [1 :minutes] :every :day)
     (server/run-server (wrap-defaults #'routes/app-routes site-defaults) {:port port})
     (println (str "Running webserver at http:/127.0.0.1:" port "/"))))
+

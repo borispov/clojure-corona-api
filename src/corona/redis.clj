@@ -5,7 +5,20 @@
     [clojure.data.json :as json]))
 
 ; json config with redis keys
-(def jsonconfig (json/read-str (slurp "./config.json") :key-fn keyword))
+;; (def jsonconfig (json/read-str (slurp "./config.json") :key-fn keyword))
+
+(def jsonconfig {
+                 :worldToday "covidapi:worldToday",
+                 :countryToday "covidapi:countryToday:",
+                 :countryYesterday "covidapi:countryYesterday:",
+                 :countries "covidapi:countries",
+                 :resources "covidapi:resources",
+                 :newsHeb "covidapi:newsHeb",
+                 :worldYesterday "covidapi:worldYesterday",
+                 :countriesList "covidapi:countriesList",
+                 :historical "covidapi:historical:",
+                 :israelTime "covidapi:historical:israel",
+                 :worldTime "covidapi:historical:world"})
 
 ; Redis connection
 (def server1-conn {:pool {} :spec {:uri "redis://127.0.0.1:6379/"}})

@@ -27,32 +27,42 @@
   (let [redis-key (utils/get-redis-key (if yday "countryYesterday" "countryToday" ))]
     (car-set 
       (str redis-key country) 
-      (json/write-str (retrieve-daily-external country yday)))))
+      (retrieve-daily-external country yday))))
 
 (defn get-country-stats
   ([country]
      (get-country-stats country nil))
   ([country yday]
     (let [redis-key (utils/get-redis-key (if yday "countryYesterday" "countryToday" ))]
-      (or 
-        (car-get (str redis-key country))
-        (save-country-stats-to-redis country yday)))))
+      {:headers {"Content-type" "application/json"}
+       :status 200
+       :body (json/write-str
+               {:data (or (car-get (str redis-key country))
+                          (save-country-stats-to-redis country yday))})})))
 
 (defn save-countries []
   (try
     (car-set "covidapi:countryList" (utils/get-countries-list))
     (catch Exception e (prn "Handling Generic Error Saving Countries List"))))
 
-(defn get-countries [req] (or (car-get "covidapi:countryList") (save-countries)))
+; (defn get-countries [req] (or (car-get "covidapi:countryList") (save-countries)))
 
+(defn get-countries [req] 
+  {:headers {"Content-type" "application/json"}
+   :status 200
+   :body (json/write-str
+           (or (car-get "covidapi:countryList") 
+               (utils/get-countries-list)))})
 
 ; retrieve historical data for country
 (defn get-historical-data
   ([] (get-historical-data "world"))
-  ([country] (let [c (str/capitalize country)]
-     (or
-        (car-get (str (get-redis-key "historical") c))
-        (utils/filter-location c (car-get "covidapi:historical"))))))
+  ([country] 
+   (let [c (str/capitalize country)]
+     {:headers {"Content-type" "application/json"}
+      :status 200
+      :body (json/write-str (or (car-get (str (get-redis-key "historical") c))
+                                (utils/filter-location c (car-get "covidapi:historical"))))})))
 
 (defn save-all-historical [] (car-set "covidapi:historical" (utils/get-historical-data-all)))
 
