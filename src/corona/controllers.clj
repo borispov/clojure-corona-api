@@ -37,8 +37,8 @@
       {:headers {"Content-type" "application/json"}
        :status 200
        :body (json/write-str
-               {:data (or (car-get (str redis-key country))
-                          (save-country-stats-to-redis country yday))})})))
+               (or (car-get (str redis-key country))
+                          (save-country-stats-to-redis country yday)))})))
 
 (defn save-countries []
   (try
